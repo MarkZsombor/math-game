@@ -14,10 +14,6 @@ class MathGame
     @current_player = 0
   end
 
-  def current_player
-    @players[@current_player]
-  end
-
   def swap_players
     @current_player = (@current_player + 1) % @players.length
   end
@@ -26,13 +22,13 @@ class MathGame
     puts 'Do you want to play a game?'
     until game_over? do
       puts '*** NEW ROUND ***'
-      puts "Are you ready #{current_player.name}?"
+      puts "Are you ready #{@players[@current_player].name}?"
       q = Question.new
       puts "What is #{q.variable_1} + #{q.variable_2}?"
       if gets.chomp.to_i == q.answer
         puts 'You are smarter than you look'
       else
-        lose_life
+        @players[@current_player].lose_life
         puts "You are dumber than you look"
       end
       swap_players
@@ -40,7 +36,6 @@ class MathGame
     end
     puts '*** GAME OVER ***'
     declare_winner
-    puts 'You realize 2nd graders can do this right?'
   end
 
   def current_score
@@ -49,10 +44,6 @@ class MathGame
 
   def game_over?
     @players.any? { |player| player.lives == 0 }
-  end
-
-  def lose_life
-    current_player.lose_life
   end
 
   def declare_winner
